@@ -1,0 +1,37 @@
+name: Build and Release AdFinder
+
+permissions:
+  contents: write
+
+on:
+  push:
+    tags:
+      - 'V*'
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Build with PyInstaller
+        run: pyinstaller main.spec
+
+      - name: Create and Upload Release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          file: dist/AdFinder.exe
+          asset_name: AdFinder_${{ github.ref_name }}.exe
+          tag: ${{ github.ref_name }}
+          overwrite: true

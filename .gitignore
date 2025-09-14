@@ -1,0 +1,9 @@
+.idea
+build
+dist
+log
+.DS_Store
+*.json
+*.pyc
+*.log
+._*

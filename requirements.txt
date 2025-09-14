@@ -1,0 +1,4 @@
+av==12.3.0
+ImageHash==4.3.2
+pillow==10.2.0
+pyinstaller==6.16.0

@@ -65,14 +65,16 @@ class GSObject:
     @classmethod
     def screenshot(cls, video_path, time_second):
         try:
+            result = None
             container = av.open(video_path)
             container.seek(int(time_second * av.time_base))
             for frame in container.decode(video=0):
-                image = frame.to_image()
-                return image
+                result = frame.to_image()
                 break
             container.close()
-        except Exception:
+            return result
+        except Exception as e:
+            print(f'截图错误: {str(e)}')
             return None
 
     @classmethod
@@ -88,7 +90,7 @@ class GSObject:
             similarity = 1 - (hamming_distance / max_distance)
             return similarity
         except Exception as e:
-            print(f'错误: {str(e)}')
+            print(f'对比错误: {str(e)}')
             return None
 
 
@@ -141,7 +143,7 @@ class AdFinderConfig:
 
 class AdFinderApp:
     def __init__(self, root):
-        self.version = 'V1.0'
+        self.version = 'V1.1'
         self.root = root
         self.root.title(f'AdFinder {self.version}')
         self.root.geometry('720x405')
